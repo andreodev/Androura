@@ -5,6 +5,7 @@ import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { LoteProvider } from '@/src/context/LoteContext';
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -13,17 +14,24 @@ export default function RootLayout() {
   });
 
   if (!loaded) {
-    // Async font loading only occurs in development.
     return null;
   }
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <StatusBar style="auto" />
+      <LoteProvider>
+        <Stack>
+          {/* Splash vem primeiro */}
+          <Stack.Screen name="splash" options={{ headerShown: false }} />
+          
+          {/* Tabs com as telas principais */}
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+
+          {/* Página de erro */}
+          <Stack.Screen name="+not-found" />
+        </Stack>
+        <StatusBar style="auto" />
+      </LoteProvider>
     </ThemeProvider>
   );
 }
