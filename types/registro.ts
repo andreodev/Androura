@@ -6,4 +6,5 @@ export interface Registro {
   mortas: number;
   racaoKg: number;
   loteId: string;
+  eliminadas: number
 }

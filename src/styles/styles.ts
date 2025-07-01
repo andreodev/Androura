@@ -19,7 +19,7 @@ export const styles = StyleSheet.create({
   sectionHeader: {
     fontSize: 22,
     fontWeight: '700',
-    color: '#1A237E',
+    color: '#00ff37',
     marginBottom: 12,
     marginTop: 24,
   },

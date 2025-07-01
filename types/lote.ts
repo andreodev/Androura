@@ -10,4 +10,5 @@ export interface Lote {
   nucleo: number;
   galpao: number;
   numeroAvesInicioMes: number;
+  avesAtuais: number;
 }

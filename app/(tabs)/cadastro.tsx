@@ -1,110 +1,207 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import api from '@/services/api';
+import type { Lote } from '@/types/lote';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { useEffect, useState } from 'react';
+import {
+  Alert,
+  Button,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity
+} from 'react-native';
 
-import { Collapsible } from '@/components/Collapsible';
-import { ExternalLink } from '@/components/ExternalLink';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
-import { IconSymbol } from '@/components/ui/IconSymbol';
+export default function CadastroRegistro() {
+  const [lotes, setLotes] = useState<Lote[]>([]);
+  const [loteId, setLoteId] = useState('');
+  const [dataObj, setDataObj] = useState<Date | null>(null);
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [coletas, setColetas] = useState('');
+  const [totalOvos, setTotalOvos] = useState('');
+  const [eliminadas, setEliminadas] = useState('');
+  const [mortas, setMortas] = useState('');
+  const [totalAves, setTotalAves] = useState('');
+  const [racaoKg, setRacaoKg] = useState('');
+  const [observacoes, setObservacoes] = useState('');
 
-export default function Cadastro() {
+
+  useEffect(() => {
+    api.get<Lote[]>('/lotes')
+      .then(res => {
+        setLotes(res.data);
+        if (res.data.length > 0) setLoteId(res.data[0].id);
+      })
+      .catch(err => console.error(err));
+  }, []);
+
+  // ** NOVO: calcula totalOvos a partir das coletas **
+  useEffect(() => {
+    if (!coletas) {
+      setTotalOvos('');
+      return;
+    }
+    const soma = coletas
+      .split(',')
+      .map(c => Number(c.trim()))
+      .filter(n => !isNaN(n))
+      .reduce((acc, cur) => acc + cur, 0);
+    setTotalOvos(soma.toString());
+  }, [coletas]);
+
+  const onChangeDate = (event: any, selectedDate?: Date) => {
+    setShowDatePicker(Platform.OS === 'ios');
+    if (selectedDate) setDataObj(selectedDate);
+  };
+
+  const handleSalvar = async () => {
+    if (!loteId || !dataObj) {
+      Alert.alert('Erro', 'Preencha os campos obrigatórios (lote e data).');
+      return;
+    }
+
+    const registroPayload = {
+  loteId,
+  dia: dataObj.getUTCDate(),
+  data: dataObj.toISOString(), // ⬅ Aqui
+  coletas: coletas
+    ? coletas.split(',').map(c => Number(c.trim())).filter(n => !isNaN(n))
+    : [],
+  totalOvos: Number(totalOvos) || 0,
+  eliminadas: Number(eliminadas) || 0,
+  mortas: Number(mortas) || 0,
+  racaoKg: Number(racaoKg) || 0,
+  observacoes: observacoes || '',
+};
+
+    try {
+      await api.post('/registro', registroPayload);
+      Alert.alert('Sucesso', 'Registro salvo com sucesso!');
+
+      setDataObj(null);
+      setColetas('');
+      setTotalOvos('');
+      setEliminadas('');
+      setMortas('');
+      setTotalAves('');
+      setRacaoKg('');
+      setObservacoes('');
+    } catch (error) {
+      console.error(error);
+      Alert.alert('Erro', 'Não foi possível salvar o registro.');
+    }
+  };
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
-      headerImage={
-        <IconSymbol
-          size={310}
-          color="#808080"
-          name="chevron.left.forwardslash.chevron.right"
-          style={styles.headerImage}
+    <ScrollView
+      style={styles.container}
+      keyboardShouldPersistTaps="handled"
+      contentContainerStyle={{ paddingBottom: 100 }}
+    >
+      <Text style={styles.title}>📋 Novo Registro Diário</Text>
+
+      <Text style={styles.label}>Data</Text>
+      <TouchableOpacity
+        style={styles.input}
+        onPress={() => setShowDatePicker(true)}
+      >
+        <Text style={{ color: dataObj ? '#000' : '#888' }}>
+          {dataObj ? dataObj.toLocaleDateString() : 'Selecione a data'}
+        </Text>
+      </TouchableOpacity>
+
+      {showDatePicker && (
+        <DateTimePicker
+          value={dataObj || new Date()}
+          mode="date"
+          display="default"
+          onChange={onChangeDate}
+          maximumDate={new Date()}
         />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Explore</ThemedText>
-      </ThemedView>
-      <ThemedText>This app includes example code to help you get started.</ThemedText>
-      <Collapsible title="File-based routing">
-        <ThemedText>
-          This app has two screens:{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/explore.tsx</ThemedText>
-        </ThemedText>
-        <ThemedText>
-          The layout file in <ThemedText type="defaultSemiBold">app/(tabs)/_layout.tsx</ThemedText>{' '}
-          sets up the tab navigator.
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/router/introduction">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Android, iOS, and web support">
-        <ThemedText>
-          You can open this project on Android, iOS, and the web. To open the web version, press{' '}
-          <ThemedText type="defaultSemiBold">w</ThemedText> in the terminal running this project.
-        </ThemedText>
-      </Collapsible>
-      <Collapsible title="Images">
-        <ThemedText>
-          For static images, you can use the <ThemedText type="defaultSemiBold">@2x</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">@3x</ThemedText> suffixes to provide files for
-          different screen densities
-        </ThemedText>
-        <Image source={require('@/assets/images/react-logo.png')} style={{ alignSelf: 'center' }} />
-        <ExternalLink href="https://reactnative.dev/docs/images">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Custom fonts">
-        <ThemedText>
-          Open <ThemedText type="defaultSemiBold">app/_layout.tsx</ThemedText> to see how to load{' '}
-          <ThemedText style={{ fontFamily: 'SpaceMono' }}>
-            custom fonts such as this one.
-          </ThemedText>
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/versions/latest/sdk/font">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Light and dark mode components">
-        <ThemedText>
-          This template has light and dark mode support. The{' '}
-          <ThemedText type="defaultSemiBold">useColorScheme()</ThemedText> hook lets you inspect
-          what the user&apos;s current color scheme is, and so you can adjust UI colors accordingly.
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/develop/user-interface/color-themes/">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Animations">
-        <ThemedText>
-          This template includes an example of an animated component. The{' '}
-          <ThemedText type="defaultSemiBold">components/HelloWave.tsx</ThemedText> component uses
-          the powerful <ThemedText type="defaultSemiBold">react-native-reanimated</ThemedText>{' '}
-          library to create a waving hand animation.
-        </ThemedText>
-        {Platform.select({
-          ios: (
-            <ThemedText>
-              The <ThemedText type="defaultSemiBold">components/ParallaxScrollView.tsx</ThemedText>{' '}
-              component provides a parallax effect for the header image.
-            </ThemedText>
-          ),
-        })}
-      </Collapsible>
-    </ParallaxScrollView>
+      )}
+      <Text style={styles.label}>Coletas (separadas por vírgula)</Text>
+      <TextInput
+        style={styles.input}
+        value={coletas}
+        onChangeText={setColetas}
+        placeholder="Ex: 30, 42"
+        keyboardType="numeric"
+      />
+
+      <Text style={styles.label}>Total de Ovos</Text>
+      <TextInput
+        style={styles.input}
+        value={totalOvos}
+        onChangeText={setTotalOvos}
+        keyboardType="numeric"
+        placeholder="0"
+      />
+
+      <Text style={styles.label}>Eliminadas</Text>
+      <TextInput
+        style={styles.input}
+        value={eliminadas}
+        onChangeText={setEliminadas}
+        keyboardType="numeric"
+        placeholder="0"
+      />
+
+      <Text style={styles.label}>Mortes</Text>
+      <TextInput
+        style={styles.input}
+        value={mortas}
+        onChangeText={setMortas}
+        keyboardType="numeric"
+        placeholder="0"
+      />
+
+      <Text style={styles.label}>Ração (Kg)</Text>
+      <TextInput
+        style={styles.input}
+        value={racaoKg}
+        onChangeText={setRacaoKg}
+        keyboardType="numeric"
+        placeholder="0"
+      />
+
+      <Text style={styles.label}>Observações</Text>
+      <TextInput
+        style={[styles.input, { height: 80 }]}
+        value={observacoes}
+        onChangeText={setObservacoes}
+        multiline
+        placeholder="Digite observações..."
+      />
+
+      <Button title="Salvar Registro" onPress={handleSalvar} color="#388E3C" />
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  headerImage: {
-    color: '#808080',
-    bottom: -90,
-    left: -35,
-    position: 'absolute',
+  container: {
+    padding: 20,
+    backgroundColor: '#FFFDE7',
+    flex: 1,
   },
-  titleContainer: {
-    flexDirection: 'row',
-    gap: 8,
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#2E7D32',
+    marginBottom: 20,
+  },
+  label: {
+    fontWeight: '600',
+    marginTop: 10,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: '#CCC',
+    borderRadius: 6,
+    padding: 10,
+    marginTop: 4,
+    backgroundColor: '#FFF',
+    justifyContent: 'center',
   },
 });

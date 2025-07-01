@@ -2,7 +2,7 @@ import { useLote } from '@/hooks/useLote';
 import type { Lote } from '@/types/lote';
 import React, { createContext, ReactNode, useContext } from 'react';
 
-const loteId = '68605633a1adf0d343379193'; // ID fixo da fazenda
+const loteId = '6862b18f89bc9001c2c7ad58'; // ID fixo da fazenda
 
 interface LoteContextProps {
   lote: Lote | null;  // aceitar null
