@@ -1,5 +1,3 @@
-import api from '@/services/api';
-import type { Lote } from '@/types/lote';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
@@ -14,6 +12,8 @@ import {
   TouchableOpacity
 } from 'react-native';
 import Toast from 'react-native-toast-message';
+import api from '../../services/api';
+import type { Lote } from '../../types/lote';
 
 export default function CadastroRegistro() {
   const [lotes, setLotes] = useState<Lote[]>([]);

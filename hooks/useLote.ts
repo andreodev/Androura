@@ -1,7 +1,6 @@
-// hooks/useLote.ts
-import api from '@/services/api';
-import type { Lote } from '@/types/lote';
 import { useEffect, useState } from 'react';
+import api from '../services/api';
+import type { Lote } from '../types/lote';
 
 
 export const useLote = (loteId: string) => {

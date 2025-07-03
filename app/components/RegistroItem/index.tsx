@@ -1,8 +1,8 @@
 import { Trash2 } from 'lucide-react-native';
 import React from 'react';
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import type { Registro } from '../../../types/registro';
 
-import type { Registro } from '@/types/registro';
 
 type RegistroItemProps = {
   registro: Registro;

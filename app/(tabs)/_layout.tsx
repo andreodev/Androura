@@ -1,12 +1,12 @@
-import { HapticTab } from '@/components/HapticTab';
-import TabBarBackground from '@/components/ui/TabBarBackground';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
-import { useLoteContext } from '@/src/context/LoteContext';
 import { Tabs } from 'expo-router';
 import { Platform } from 'react-native';
 
 import { Home, PencilLine, User } from 'lucide-react-native';
+import { HapticTab } from '../../components/HapticTab';
+import BlurTabBarBackground from '../../components/ui/TabBarBackground.ios';
+import { Colors } from '../../constants/Colors';
+import { useColorScheme } from '../../hooks/useColorScheme.web';
+import { useLoteContext } from '../../src/context/LoteContext';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -20,7 +20,7 @@ export default function TabLayout() {
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
         headerShown: true,
         tabBarButton: HapticTab,
-        tabBarBackground: TabBarBackground,
+        tabBarBackground: BlurTabBarBackground,
         tabBarStyle: Platform.select({
           ios: { position: 'absolute' },
           default: {},

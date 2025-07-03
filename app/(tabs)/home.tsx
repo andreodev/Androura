@@ -1,9 +1,9 @@
-import api from '@/services/api';
-import { useLoteContext } from '@/src/context/LoteContext';
-import type { Registro } from '@/types/registro';
 import { useFocusEffect } from '@react-navigation/native';
 import React, { useCallback, useEffect, useState } from 'react';
 import Toast from 'react-native-toast-message';
+import api from '../../services/api';
+import { useLoteContext } from '../../src/context/LoteContext';
+import type { Registro } from '../../types/registro';
 import ListaRegistros from '../components/ListaRegistro';
 
 export default function HomeScreen() {

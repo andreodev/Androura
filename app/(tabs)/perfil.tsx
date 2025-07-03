@@ -1,4 +1,3 @@
-import { useLoteContext } from "@/src/context/LoteContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as ImagePicker from "expo-image-picker";
 import { useEffect, useState } from "react";
@@ -11,6 +10,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { useLoteContext } from "../../src/context/LoteContext";
 
 export default function PerfilScreen() {
   const { lote, loading: loadingLote } = useLoteContext();

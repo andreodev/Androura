@@ -1,6 +1,6 @@
-import { useLote } from '@/hooks/useLote';
-import type { Lote } from '@/types/lote';
 import React, { createContext, ReactNode, useContext } from 'react';
+import { useLote } from '../../hooks/useLote';
+import type { Lote } from '../../types/lote';
 
 const loteId = '6862b18f89bc9001c2c7ad58'; // ID fixo da fazenda
 

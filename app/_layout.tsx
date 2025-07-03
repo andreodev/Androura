@@ -3,10 +3,9 @@ import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
-
-import { useColorScheme } from '@/hooks/useColorScheme';
-import { LoteProvider } from '@/src/context/LoteContext';
 import Toast from 'react-native-toast-message';
+import { useColorScheme } from '../hooks/useColorScheme.web';
+import { LoteProvider } from '../src/context/LoteContext';
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();

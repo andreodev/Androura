@@ -1,7 +1,7 @@
-import Loading from '@/components/Loading';
-import type { Registro } from '@/types/registro';
 import React from 'react';
 import { Button, SectionList, StyleSheet, Text, View } from 'react-native';
+import Loading from '../../../components/Loading';
+import type { Registro } from '../../../types/registro';
 import FiltroData from '../FiltroData';
 import RegistroItem from '../RegistroItem';
 import CardsHome from '../cards';
