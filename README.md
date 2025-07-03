@@ -1,50 +1,77 @@
-# Welcome to your Expo app 👋
+# Androura 🐓
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Bem-vindo ao **Androura**, um aplicativo para gestão de granjas, desenvolvido com [Expo](https://expo.dev/) e React Native.
 
-## Get started
+## 📱 Sobre o Projeto
 
-1. Install dependencies
+O Androura foi criado para facilitar o controle diário de registros de produção, mortalidade, alimentação e outras informações essenciais para granjas avícolas. Com ele, você pode:
 
-   ```bash
+- Registrar dados diários de produção de ovos, aves mortas, eliminadas e consumo de ração.
+- Visualizar resumos mensais e diários dos registros.
+- Gerenciar informações do lote e do proprietário.
+- Filtrar registros por mês e ano.
+- Adicionar e remover fotos da fazenda.
+- Interface amigável, responsiva e com feedback háptico.
+
+## 🚀 Como começar
+
+1. **Instale as dependências:**
+
+   ```sh
    npm install
    ```
 
-2. Start the app
+2. **Inicie o app:**
 
-   ```bash
+   ```sh
    npx expo start
    ```
 
-In the output, you'll find options to open the app in a
+   Siga as instruções para abrir no emulador Android/iOS ou no navegador.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## 🗂 Estrutura do Projeto
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+- `app/` — Telas e componentes principais da aplicação.
+- `components/` — Componentes reutilizáveis.
+- `hooks/` — Hooks customizados para lógica de dados e temas.
+- `services/` — Integração com API (axios).
+- `src/context/` — Contextos globais (ex: Lote).
+- `types/` — Tipos TypeScript para dados da aplicação.
+- `assets/` — Imagens e fontes.
 
-## Get a fresh project
+## ⚙️ Funcionalidades
 
-When you're ready, run:
+- **Splash Screen personalizada**
+- **Navegação por abas** (Início, Perfil, Registro Diário)
+- **Cadastro de registros diários**
+- **Resumo mensal dos dados**
+- **Exclusão de registros**
+- **Perfil do proprietário/lote**
+- **Persistência de foto da fazenda**
+- **Feedback visual e háptico**
+- **Filtro por mês/ano**
 
-```bash
-npm run reset-project
-```
+## 🛠 Tecnologias
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+- [React Native](https://reactnative.dev/)
+- [Expo](https://expo.dev/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Axios](https://axios-http.com/)
+- [React Navigation](https://reactnavigation.org/)
+- [Expo Router](https://expo.github.io/router/)
+- [Lucide Icons](https://lucide.dev/)
+- [AsyncStorage](https://react-native-async-storage.github.io/async-storage/)
+- [Expo Haptics](https://docs.expo.dev/versions/latest/sdk/haptics/)
 
-## Learn more
+## 📦 Scripts Úteis
 
-To learn more about developing your project with Expo, look at the following resources:
+- `npm run start` — Inicia o app.
+- `npm run reset-project` — Reseta o projeto para o estado inicial.
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+## 👨‍🌾 Contribuição
 
-## Join the community
+Sinta-se à vontade para abrir issues ou pull requests para melhorias!
 
-Join our community of developers creating universal apps.
+---
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+Desenvolvido com carinho para facilitar a vida no campo. 🌾
