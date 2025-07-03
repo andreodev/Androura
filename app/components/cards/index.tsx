@@ -1,4 +1,3 @@
-import type { Lote } from '@/types/lote';
 import { StyleSheet, Text, View } from 'react-native';
 
 
@@ -15,10 +14,9 @@ interface CardsHomeProps {
   registros: Registro[];
   mesSelecionado: number;
   anoSelecionado: number;
-  lote: Lote | null;
 }
 
-export default function CardsHome({ registros, mesSelecionado, anoSelecionado, lote }: CardsHomeProps) {
+export default function CardsHome({ registros, mesSelecionado, anoSelecionado }: CardsHomeProps) {
   const registrosDoMes = registros.filter(reg => {
     const data = new Date(reg.data);
     return data.getMonth() === mesSelecionado && data.getFullYear() === anoSelecionado;
@@ -38,7 +36,6 @@ export default function CardsHome({ registros, mesSelecionado, anoSelecionado, l
 </Text>
 
       <View style={styles.cardsContainer}>
-        <Card emoji="🐓" label="Galinhas" value={lote ? lote.avesAtuais : 0} color="#E3F2FD" />
         <Card emoji="🥚" label="Total Ovos" value={totalOvos} color="#E3F2FD" />
         <Card emoji="💀" label="Mortas" value={totalMortas} color="#FFEBEE" />
         <Card emoji="🍗" label="Eliminadas" value={totalEliminadas} color="#FFF3E0" />

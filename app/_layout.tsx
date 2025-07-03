@@ -6,6 +6,7 @@ import 'react-native-reanimated';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { LoteProvider } from '@/src/context/LoteContext';
+import Toast from 'react-native-toast-message';
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -20,6 +21,7 @@ export default function RootLayout() {
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <LoteProvider>
+
         <Stack>
           {/* Splash vem primeiro */}
           <Stack.Screen name="splash" options={{ headerShown: false }} />
@@ -32,6 +34,7 @@ export default function RootLayout() {
         </Stack>
         <StatusBar style="auto" />
       </LoteProvider>
+      <Toast />
     </ThemeProvider>
   );
 }

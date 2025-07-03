@@ -1,6 +1,7 @@
 import api from '@/services/api';
 import type { Lote } from '@/types/lote';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import {
   Alert,
@@ -12,6 +13,7 @@ import {
   TextInput,
   TouchableOpacity
 } from 'react-native';
+import Toast from 'react-native-toast-message';
 
 export default function CadastroRegistro() {
   const [lotes, setLotes] = useState<Lote[]>([]);
@@ -55,43 +57,55 @@ export default function CadastroRegistro() {
     if (selectedDate) setDataObj(selectedDate);
   };
 
-  const handleSalvar = async () => {
-    if (!loteId || !dataObj) {
-      Alert.alert('Erro', 'Preencha os campos obrigatórios (lote e data).');
-      return;
-    }
+const handleSalvar = async () => {
+  if (!loteId || !dataObj) {
+    Alert.alert('Erro', 'Preencha os campos obrigatórios (lote e data).');
+    return;
+  }
 
-    const registroPayload = {
-  loteId,
-  dia: dataObj.getUTCDate(),
-  data: dataObj.toISOString(), // ⬅ Aqui
-  coletas: coletas
-    ? coletas.split(',').map(c => Number(c.trim())).filter(n => !isNaN(n))
-    : [],
-  totalOvos: Number(totalOvos) || 0,
-  eliminadas: Number(eliminadas) || 0,
-  mortas: Number(mortas) || 0,
-  racaoKg: Number(racaoKg) || 0,
-  observacoes: observacoes || '',
-};
-
-    try {
-      await api.post('/registro', registroPayload);
-      Alert.alert('Sucesso', 'Registro salvo com sucesso!');
-
-      setDataObj(null);
-      setColetas('');
-      setTotalOvos('');
-      setEliminadas('');
-      setMortas('');
-      setTotalAves('');
-      setRacaoKg('');
-      setObservacoes('');
-    } catch (error) {
-      console.error(error);
-      Alert.alert('Erro', 'Não foi possível salvar o registro.');
-    }
+  const registroPayload = {
+    loteId,
+    dia: dataObj.getUTCDate(),
+    data: dataObj.toISOString(),
+    coletas: coletas
+      ? coletas.split(',').map(c => Number(c.trim())).filter(n => !isNaN(n))
+      : [],
+    totalOvos: Number(totalOvos) || 0,
+    eliminadas: Number(eliminadas) || 0,
+    mortas: Number(mortas) || 0,
+    racaoKg: Number(racaoKg) || 0,
+    observacoes: observacoes || '',
   };
+
+  try {
+    await api.post('/registro', registroPayload);
+
+    Toast.show({
+      type: 'success',
+      text1: 'Registro salvo com sucesso!',
+      position: 'bottom',
+    });
+
+    // Limpar campos após salvar
+    setLoteId(lotes.length > 0 ? lotes[0].id : '');
+    setDataObj(null);
+    setColetas('');
+    setTotalOvos('');
+    setEliminadas('');
+    setMortas('');
+    setRacaoKg('');
+    setObservacoes('');
+
+    // Esperar o Toast aparecer e depois navegar
+    setTimeout(() => {
+      router.replace('/home');
+    }, 1500);
+
+  } catch (error) {
+    console.error(error);
+    Alert.alert('Erro', 'Não foi possível salvar o registro.');
+  }
+};
 
   return (
     <ScrollView
